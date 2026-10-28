@@ -37,8 +37,23 @@ function setupSignature(canvas){canvas.style.touchAction='none';canvas.style.use
  canvas.addEventListener('pointerup',()=>active=false);canvas.addEventListener('pointercancel',()=>active=false);
 }
 document.querySelectorAll('.signature-canvas').forEach(setupSignature);
-// Bloquear selección de textos y gestos dentro del panel de firma.
-const signatureStyles=document.createElement('style');signatureStyles.textContent='.signature-box{user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none}.signature-box canvas{display:block!important;touch-action:none!important;user-select:none!important;-webkit-user-select:none!important;cursor:crosshair;outline:2px solid #3377bb;outline-offset:0;border:2px solid #3377bb!important;background:#fff!important;min-height:118px!important}';document.head.append(signatureStyles);
+// Zona de firma visible y acotada. El dibujo se captura únicamente dentro del canvas.
+const signatureStyles=document.createElement('style');
+signatureStyles.textContent=`
+.signature-box{min-width:0;user-select:none!important;-webkit-user-select:none!important}
+.signature-frame{width:100%;max-width:540px;min-width:0;box-sizing:border-box; padding:12px;border:2px solid #146099;border-radius:12px;background:#eff8fc;box-shadow:0 2px 8px rgba(8,55,88,.08)}
+.signature-frame .signature-instruction{display:block;font-weight:700;color:#07517c;font-size:13px;margin:0 0 8px}
+.signature-frame canvas.signature-canvas{display:block!important;position:static!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;height:155px!important;min-height:155px!important;margin:0!important;padding:0!important;border:2px dashed #7099b4!important;border-radius:6px!important;background:#fff!important;outline:none!important;touch-action:none!important;user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none!important;cursor:crosshair}
+@media print{.signature-frame{display:none!important}}
+`;
+document.head.append(signatureStyles);
+document.querySelectorAll('.signature-box .signature-canvas').forEach(canvas=>{
+ const frame=document.createElement('div');frame.className='signature-frame';
+ const help=document.createElement('span');help.className='signature-instruction';help.textContent='Firme dentro del recuadro';
+ canvas.parentNode.insertBefore(frame,canvas);frame.append(help,canvas);
+ frame.addEventListener('selectstart',e=>e.preventDefault());
+ canvas.addEventListener('dragstart',e=>e.preventDefault());
+});
 document.querySelectorAll('.clear-sign').forEach(b=>b.addEventListener('click',()=>{const c=document.getElementById(b.dataset.sign);c.getContext('2d').clearRect(0,0,c.width,c.height);c.dataset.signed='no'}));
 document.getElementById('form').addEventListener('reset',()=>{vehicleGallery.clear();supportGallery.clear();additionalSigners.clear();Object.keys(photoData).forEach(k=>delete photoData[k]);document.querySelectorAll('.photo-preview').forEach(p=>{p.hidden=true;p.removeAttribute('src')});document.querySelectorAll('.signature-canvas').forEach(c=>{c.getContext('2d').clearRect(0,0,c.width,c.height);c.dataset.signed='no'})});
 function populate(){const pages=[1,2,3,4].map(newPage);const a=pages[0],b=pages[1];
