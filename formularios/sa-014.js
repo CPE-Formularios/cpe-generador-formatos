@@ -1,7 +1,22 @@
 import {createGallery,createAdditionalSigners,signatureImage} from '../js/componentes-captura.js';
 import {renderDocument,blockSection,blockTable,blockPhoto,blockSigner} from '../js/pdf.js';
 const groups={fisico:['REVISIÓN TÉCNICO MECÁNICA Y DE GASES VIGENTE','EQUIPO DE CARRETERA','LAS ESTACAS SE ENCUENTRAN EN BUEN ESTADO (si aplica)','LAS COMPUERTAS CIERRAN BIEN','EL PISO SE ENCUENTRA EN BUEN ESTADO','SISTEMA DE COMUNICACIÓN (teléfono celular, radioteléfono, radio, entre otros)','EL SISTEMA ELÉCTRICO FUNCIONA CORRECTAMENTE','Encendido','Estacionarias','Pito','Luces','Sonido de reversas'],seguridad:['ELEMENTOS DE PROTECCIÓN PERSONAL EPP (guantes protectores, monogafas, calzado de seguridad)','BOTIQUÍN DE PRIMEROS AUXILIOS','UN EXTINTOR (Mínimo uno, con fecha de vencimiento no mayor a 1 año)','DOCUMENTOS VIGENTES SEGÚN NORMAS DE TRÁNSITO Y TRANSPORTE','Licencia de Conducción (Pase)','Tarjeta Propiedad','SOAT'],almacenamiento:['ACOMODADA','ESTIBADA','APILADA','SUJETA','CUBIERTA'],senalizacion:['Placa naranja con UN (Número de Naciones Unidas) en todas las caras visibles (incluyendo la parte delantera de la cabina)','Señalización en forma de diamante (clase 6 y/o 9)'],peligrosas:['CERTIFICADO DE CURSO OBLIGATORIO DE CAPACITACIÓN PARA TRANSPORTAR ELEMENTOS PELIGROSOS (CONDUCTOR)','COPIA HOJAS DE SEGURIDAD DE LOS RESPEL A TRANSPORTAR','COPIA DE TARJETAS DE EMERGENCIA DE LOS RESPEL','COPIA DE PLAN DE CONTINGENCIA PARA ATENDER ACCIDENTES','2 EXTINTORES UNO EN CABINA Y OTRO CON LA CARGA','EL VEHÍCULO SÓLO TRANSPORTA RESPEL (NO Alimentos, Animales, Medicamentos, etc.)','EQUIPO PARA RECOLECCIÓN Y LIMPIEZA EN CASO DE EMERGENCIA','RESIDUOS DEBIDAMENTE EMBALADOS Y ETIQUETADOS (Según Norma NTC1692)']};
-const form=document.getElementById('form');const val=n=>form.elements.namedItem(n)?.value||'';const fmtDate=v=>v?`${v.slice(8,10)}/${v.slice(5,7)}/${v.slice(0,4)}`:'';
+const form=document.getElementById('form');
+// Normaliza el campo Centro aunque GitHub Pages haya servido un HTML anterior.
+const centroAnterior=form.elements.namedItem('centro');
+if (centroAnterior && centroAnterior.tagName !== 'SELECT') {
+  const selector=document.createElement('select');
+  selector.name='centro';
+  selector.id=centroAnterior.id || 'centro';
+  selector.required=centroAnterior.required;
+  [['','Selecciona el centro'],['CST','CST'],['SC','SC'],['CENARE','CENARE']].forEach(([value,label])=>{
+    const option=document.createElement('option');option.value=value;option.textContent=label;selector.appendChild(option);
+  });
+  const valorAnterior=(centroAnterior.value||'').trim().toUpperCase();
+  if (['CST','SC','CENARE'].includes(valorAnterior)) selector.value=valorAnterior;
+  centroAnterior.replaceWith(selector);
+}
+const val=n=>form.elements.namedItem(n)?.value||'';const fmtDate=v=>v?`${v.slice(8,10)}/${v.slice(5,7)}/${v.slice(0,4)}`:'';
 for(const [id,items] of Object.entries(groups)){const box=document.getElementById(id);items.forEach((txt,i)=>{const label=document.createElement('label');label.className='check';const c=document.createElement('input');c.type='checkbox';c.name=id+'_'+i;label.append(c,document.createTextNode(txt));box.append(label)})}
 function conditional(){const m=val('material');document.getElementById('respelCard').hidden=m!=='RESPEL';document.getElementById('retoma').hidden=!['RESPEL','RETOMA','RAEE/CORRIENTE LIMPIA'].includes(m);document.getElementById('rechazoField').hidden=val('resultado')!=='Rechazado';document.getElementById('otroTransporteField').hidden=val('transporte')!=='OTRO';document.getElementById('otroMaterialField').hidden=m!=='OTRO'}
 ['material','resultado','transporte'].forEach(n=>form.elements.namedItem(n).addEventListener('change',conditional));
