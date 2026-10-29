@@ -1,1 +1,80 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CPE | Generador de formatos</title><link rel="stylesheet" href="css/styles.css"></head><body><div id="splash" role="status" aria-live="polite" aria-label="Cargando generador de formatos"><div class="splash-inner"><img class="splash-art" src="assets/tecnologias-para-aprender.png" alt="Tecnologías para Aprender"><div class="splash-name">Generador de formatos CPE</div><div class="splash-loading">Preparando formularios…</div><div class="splash-track" aria-hidden="true"><span class="splash-progress"></span></div></div></div><div class="bar"><div class="brand"><img src="assets/logo-cpe.png" alt="Computadores para Educar"><span class="brand-divider"></span><div><span class="brand-eyebrow">HERRAMIENTAS DIGITALES</span><h1>Generador de formatos</h1><small>Formularios institucionales · PDF</small></div></div></div><main class="wrap"><div id="homeView"><section class="home-hero"><div class="hero-copy"><span class="home-eyebrow">TECNOLOGÍAS PARA APRENDER</span><h2>Formatos listos para diligenciar</h2><p>Selecciona tu formato, complétalo y guarda el PDF directamente en tu equipo. Sin cuentas, sin trámites adicionales.</p></div><div class="hero-art" aria-hidden="true"><img src="assets/tecnologias-para-aprender.png" alt=""></div></section><aside class="save-warning" role="note"><span class="save-warning-icon" aria-hidden="true">ⓘ</span><div><strong>Importante: conserva tu PDF</strong><p>Este sistema no almacena información ni conserva un historial de formularios. Una vez generado el PDF, asegúrate de descargarlo y guardarlo en un lugar seguro. <strong>Si pierdes el archivo, no podrás recuperarlo desde esta aplicación.</strong></p></div></aside><h2 style="font-size:18px;margin:0 0 16px">Formatos disponibles</h2><div class="format-grid"><article class="format-tile"><span class="pill">Disponible</span><h3>Check List Transporte</h3><p>SA-014-F · Versión 7<br>Inspección de vehículos para cargue y descargue.</p><button type="button" id="openChecklist" class="btn">Diligenciar formato →</button></article><article class="format-tile"><span class="pill soon">Próximamente</span><h3>Recepción de muestras</h3><p>GST-013-F · Acta de recepción de muestras.</p></article><article class="format-tile"><span class="pill soon">Próximamente</span><h3>Informe final de pruebas</h3><p>GST-018-F · Informe final de pruebas a la muestra.</p></article></div><p class="info" style="margin-top:22px">Los demás formatos se incorporarán a este catálogo progresivamente.</p></div><div id="formMount"></div></main><div id="printSurface" aria-hidden="true"></div><script type="module" src="js/app.js"></script></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CPE | Generador de formatos</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="splash" role="status" aria-live="polite" aria-label="Cargando generador de formatos">
+    <div class="splash-inner">
+      <img class="splash-art" src="assets/tecnologias-para-aprender.png" alt="Tecnologías para Aprender">
+      <div class="splash-name">Generador de formatos CPE</div>
+      <div class="splash-loading">Preparando formularios…</div>
+      <div class="splash-track" aria-hidden="true"><span class="splash-progress"></span></div>
+    </div>
+  </div>
+  <div class="bar">
+    <div class="brand">
+      <img src="assets/logo-cpe.png" alt="Computadores para Educar">
+      <span class="brand-divider"></span>
+      <div>
+        <span class="brand-eyebrow">HERRAMIENTAS DIGITALES</span>
+        <h1>Generador de formatos</h1>
+        <small>Formularios institucionales · PDF</small>
+      </div>
+    </div>
+  </div>
+  <main class="wrap">
+    <div id="homeView">
+      <section class="home-hero">
+        <div class="hero-copy">
+          <span class="home-eyebrow">TECNOLOGÍAS PARA APRENDER</span>
+          <h2>Formatos listos para diligenciar</h2>
+          <p>Selecciona tu formato, complétalo y guarda el PDF directamente en tu equipo.
+          Sin cuentas, sin trámites adicionales.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true"><img src="assets/tecnologias-para-aprender.png" alt=""></div>
+      </section>
+      <aside class="save-warning" role="note">
+        <span class="save-warning-icon" aria-hidden="true">ⓘ</span>
+        <div>
+          <strong>Importante: conserva tu PDF</strong>
+          <p>Este sistema no almacena información ni conserva un historial de formularios. Una vez generado el PDF, asegúrate de descargarlo y guardarlo en un lugar seguro.
+          <strong>Si pierdes el archivo, no podrás recuperarlo desde esta aplicación.</strong></p>
+        </div>
+      </aside>
+      <h2 style="font-size:18px;margin:0 0 16px">Formatos disponibles</h2>
+      <div class="format-grid">
+        <article class="format-tile">
+          <span class="pill">Disponible</span>
+          <h3>Check List Transporte</h3>
+          <p>SA-014-F · Versión 7<br>Inspección de vehículos para cargue y descargue.</p>
+          <button type="button" id="openChecklist" class="btn">Diligenciar formato →</button>
+        </article>
+        <article class="format-tile">
+          <span class="pill">Disponible</span>
+          <h3>Acta y registro de asistencia</h3>
+          <p>SIG-003-F · Versión 8<br>Registro de participantes, firmas y compromisos.</p>
+          <a class="btn" href="formularios/sig-003.html" style="margin-top:auto;align-self:flex-start;display:inline-block;text-decoration:none">Diligenciar formato →</a>
+        </article>
+        <article class="format-tile">
+          <span class="pill soon">Próximamente</span>
+          <h3>Recepción de muestras</h3>
+          <p>GST-013-F · Acta de recepción de muestras.</p>
+        </article>
+        <article class="format-tile">
+          <span class="pill soon">Próximamente</span>
+          <h3>Informe final de pruebas</h3>
+          <p>GST-018-F · Informe final de pruebas a la muestra.</p>
+        </article>
+      </div>
+      <p class="info" style="margin-top:22px">Los demás formatos se incorporarán a este catálogo progresivamente.</p>
+    </div>
+    <div id="formMount"></div>
+  </main>
+  <div id="printSurface" aria-hidden="true"></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
