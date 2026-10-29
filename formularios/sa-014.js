@@ -57,8 +57,10 @@ function build(){const b=[];
  const required=[{role:'DILIGENCIADO POR:',nombre:val('diligenciaNombre'),cedula:val('diligenciaCedula'),extra:val('diligenciaCargo'),extraLabel:'Cargo',firma:capture('firmaDiligencia')},{role:'FIRMA CONDUCTOR:',nombre:val('conductor'),cedula:val('firmaConductorCedula'),extra:val('firmaConductorTelefono'),extraLabel:'Teléfono',firma:capture('firmaConductor')},{role:'APROBADO POR:',nombre:val('apruebaNombre'),cedula:val('apruebaCedula'),extra:val('apruebaCargo'),extraLabel:'Cargo',firma:capture('firmaAprueba')}];
  b.push(signRow(required.slice(0,2)),signRow(required.slice(2)));
  const extra=additional.getAll();if(extra.length){b.push(section('FIRMANTES ADICIONALES'));for(let i=0;i<extra.length;i+=2)b.push(signRow(extra.slice(i,i+2).map(p=>({role:'FIRMANTE ADICIONAL:',...p,extra:p.cargo,extraLabel:'Cargo'}))))}
- b.push(section('REGISTRO FOTOGRÁFICO VEHÍCULO'),...photoSlots(photos.getAll(),['VEHÍCULO','VEHÍCULO','VEHÍCULO']));
- b.push(section('DOCUMENTOS SOPORTES'),...photoSlots(supports.getAll(),['TECNO MECÁNICA O CARTA DE PROPIEDAD','CERTIFICADO CURSO TRANSPORTE ELEMENTOS PELIGROSOS (SOLO PARA RESPEL)']));
+ const imagenesVehiculo=photos.getAll();
+ if(imagenesVehiculo.length){b.push(section('REGISTRO FOTOGRÁFICO VEHÍCULO'),...photoSlots(imagenesVehiculo,[]));}
+ const documentosSoporte=supports.getAll();
+ if(documentosSoporte.length){b.push(section('DOCUMENTOS SOPORTES'),...photoSlots(documentosSoporte,[]));}
  return b;
 }
 document.getElementById('generate').onclick=async()=>{if(!val('resultado')){alert('Selecciona el resultado de la inspección.');return}if(val('resultado')==='Rechazado'&&!val('causal').trim()){alert('Indica la causal de rechazo.');return}try{await renderDocument({title:'CHECK LIST TRANSPORTE',code:'SA-014-F',version:'7',date:'Marzo/2025'},build())}catch(e){alert('Error preparando PDF: '+e.message);console.error(e)}};
