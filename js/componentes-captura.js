@@ -34,7 +34,14 @@ export function createGallery(container,{label='Fotografía'}={}){
    catch(e){close();alert('No se pudo abrir la cámara. Revisa los permisos del navegador o utiliza Elegir de galería.');return;}
    shot.onclick=()=>{if(!video.videoWidth)return;const cv=document.createElement('canvas');const scale=Math.min(1,1600/Math.max(video.videoWidth,video.videoHeight));cv.width=Math.round(video.videoWidth*scale);cv.height=Math.round(video.videoHeight*scale);cv.getContext('2d').drawImage(video,0,0,cv.width,cv.height);data=cv.toDataURL('image/jpeg',.85);img.src=data;img.hidden=false;close()};
   };
-  rem.onclick=()=>{stopCamera();items.delete(id);row.remove()};
+ rem.onclick=()=>{
+  stopCamera();
+  data=null;
+  img.removeAttribute('src');
+  img.hidden=true;
+  cameraInput.value='';
+  galleryInput.value='';
+};
   row.append(title,actions,cameraInput,galleryInput,img,rem);list.append(row);
   items.set(id,{get data(){return data},stopCamera});
  }
