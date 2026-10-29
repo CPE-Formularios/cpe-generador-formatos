@@ -1,13 +1,396 @@
-<div id="formView" hidden><div class="form-top"><div><h2>Check List Transporte</h2><span class="info">SA-014-F · Versión 7 · Marzo de 2025</span></div><button type="button" class="navbtn" id="backHome">← Volver a formatos</button></div><div class="notice"><b>Privacidad:</b> la información se diligencia en este navegador y no se envía a ningún servidor. Para guardar el documento, selecciona <b>Generar PDF</b> y en la ventana de impresión elige <b>Guardar como PDF</b>. El archivo se conserva en tu computador.</div><form id="form" autocomplete="off">
-<section class="card"><h2>1. Datos básicos</h2><div class="grid"><label class="field">Fecha <input name="fecha" type="date"></label><label class="field">Centro <select name="centro"><option value="">Selecciona el centro</option><option>CST</option><option>SC</option><option>CENARE</option></select></label><label class="field">Empresa transportadora <input name="transportadora"></label><label class="field">Fecha subasta / inicio contrato <input name="fechaContrato" type="date"></label><label class="field">No. acta / contrato <input name="contrato"></label><label class="field">Nombre del conductor <input name="conductor"></label><label class="field">EPS / ARL <input name="eps"></label></div></section>
-<section class="card"><h2>2. Descripción del vehículo</h2><div class="grid"><label class="field">No. placa <input name="placa"></label><label class="field">Tipo de transporte <select name="transporte"><option value="">Selecciona</option><option>VAN CARGO</option><option>CAMIONETA</option><option>FURGÓN PACHA SENCILLA</option><option>FURGÓN DOBLE PACHA</option><option>CAMIÓN</option><option>TRACTOCAMIÓN</option><option>OTRO</option></select></label><label class="field">Tipo de combustible <select name="combustible"><option value="">Selecciona</option><option>DIESEL</option><option>GASOLINA</option><option>GAS</option><option>GAS Y GASOLINA</option></select></label><label class="field">Material transportado <select name="material" id="material"><option value="">Selecciona</option><option>RESPEL</option><option>RETOMA</option><option>RAEE/CORRIENTE LIMPIA</option><option>EQUIPOS DE COMPUTO</option><option>LABORATORIOS DE INNOVACIÓN</option><option>KIT MAKER</option><option>OTRO</option></select></label><label class="field" id="otroTransporteField" hidden>¿Qué otro transporte? <input name="otroTransporte"></label><label class="field" id="otroMaterialField" hidden>¿Qué otro material? <input name="otroMaterial"></label></div></section>
-<section class="card"><h2>3. Aspecto físico</h2><p class="info">Marca los requisitos que cumplen. Los requisitos que no apliquen pueden explicarse en observaciones.</p><div id="fisico" class="checks"></div></section>
-<section class="card"><h2>4. Seguridad industrial</h2><div id="seguridad" class="checks"></div></section>
-<section class="card"><h2>5. Almacenamiento dentro del vehículo</h2><div id="almacenamiento" class="checks"></div><div id="retoma" class="conditional" hidden><h3 class="minor">Solo RETOMA / RESPEL / RAEE / CORRIENTE LIMPIA</h3><label class="field">¿Existe riesgo de accidente y/o riesgo al ambiente?<select name="riesgo"><option value="">Selecciona</option><option>Sí</option><option>No</option></select></label><br><label class="field">¿El cargue de material se hace dentro de la bodega?<select name="cargueBodega"><option value="">Selecciona</option><option>Sí</option><option>No</option></select></label></div></section>
-<section class="card" id="respelCard" hidden><h2>6. Validaciones adicionales para RESPEL</h2><h3 class="minor">Señalización del vehículo</h3><div id="senalizacion" class="checks"></div><h3 class="minor">Transporte de mercancías peligrosas</h3><div id="peligrosas" class="checks"></div></section>
-<section class="card"><h2>7. Resultado de la inspección</h2><div class="grid"><label class="field">Resultado <select name="resultado" id="resultado"><option value="">Selecciona</option><option>Aprobado</option><option>Rechazado</option></select></label><label class="field full" id="rechazoField" hidden>Causal de rechazo <textarea name="causal"></textarea></label><label class="field full">Observaciones <textarea name="observaciones" placeholder="Incluye aquí reingresos del vehículo durante el día y sus nuevas inspecciones visuales, si aplica."></textarea></label></div><p class="info">Si el vehículo incumple los requisitos, el formato indica abstenerse de autorizar el cargue o descargue.</p></section>
-<section class="card"><h2>8. Registro fotográfico del vehículo</h2><p class="info">Agrega las fotografías necesarias. Las tres primeras ocupan los espacios oficiales; las adicionales se incorporan como anexos en páginas nuevas.</p><div id="vehiculoGaleria"></div></section>
-<section class="card"><h2>9. Documentos soporte</h2><p class="info">Fotografía los documentos soporte cuando correspondan. Puedes agregar varios por cada tipo.</p><div id="soporteGaleria"></div></section>
-<section class="card"><h2>10. Responsables y firmas</h2><p class="info">Se incluyen los tres firmantes del formato oficial. El nombre del conductor se obtiene de Datos básicos.</p><div class="grid"><label class="field">Diligenciado por: nombre<input name="diligenciaNombre"></label><label class="field">Cédula<input name="diligenciaCedula"></label><label class="field">Cargo<input name="diligenciaCargo"></label><label class="field">Conductor: cédula<input name="firmaConductorCedula"></label><label class="field">Conductor: teléfono<input name="firmaConductorTelefono"></label><label class="field">Aprobado por: nombre<input name="apruebaNombre"></label><label class="field">Aprobado por: cédula<input name="apruebaCedula"></label><label class="field">Aprobado por: cargo<input name="apruebaCargo"></label></div><p class="info">Firma con el dedo en el celular o con el mouse en el computador. Usa «Borrar» para repetir.</p><h3 class="minor">Firmas del formato oficial</h3><div class="signature-grid"><div class="signature-box"><b>Firma de quien diligencia</b><canvas id="firmaDiligencia" class="signature-canvas" width="700" height="170"></canvas><button type="button" class="btn secondary clear-sign" data-sign="firmaDiligencia">Borrar firma</button></div><div class="signature-box"><b>Firma del conductor</b><canvas id="firmaConductor" class="signature-canvas" width="700" height="170"></canvas><button type="button" class="btn secondary clear-sign" data-sign="firmaConductor">Borrar firma</button></div><div class="signature-box"><b>Firma de quien aprueba</b><canvas id="firmaAprueba" class="signature-canvas" width="700" height="170"></canvas><button type="button" class="btn secondary clear-sign" data-sign="firmaAprueba">Borrar firma</button></div></div></section>
-<section class="card"><h3 class="minor">Firmantes adicionales (opcional)</h3><p class="info">Los tres firmantes del formato oficial se conservan. Añade otros solo si son necesarios.</p><div id="firmantesAdicionales"></div></section>
-<p class="pdf-reminder" role="note">ⓘ Recuerda guardar el documento en tu computador. El sistema no conserva copias ni permite recuperar PDF anteriores.</p><div class="actions"><button type="reset" class="btn secondary">Limpiar formulario</button><button type="button" id="generate" class="btn">Generar PDF</button></div></form></div>
+
+<div id="formView" hidden>
+  <div class="form-top">
+    <div>
+      <h2>Check List Transporte</h2>
+      <span class="info">SA-014-F · Versión 7 · Marzo de 2025</span>
+    </div>
+    <button type="button" class="navbtn" id="backHome">
+      ← Volver a formatos
+    </button>
+  </div>
+
+  <div class="notice">
+    <b>Privacidad:</b> la información se diligencia en este navegador
+    y no se envía a ningún servidor. Para guardar el documento,
+    selecciona <b>Generar PDF</b> y en la ventana de impresión
+    elige <b>Guardar como PDF</b>.
+    El archivo se conserva en tu computador.
+  </div>
+
+  <form id="form" autocomplete="off">
+
+    <!-- 1. DATOS BÁSICOS -->
+    <section class="card">
+      <h2>1. Datos básicos</h2>
+
+      <div class="grid">
+        <label class="field">
+          Fecha
+          <input name="fecha" type="date">
+        </label>
+
+        <label class="field">
+          Centro
+          <select name="centro">
+            <option value="">Selecciona el centro</option>
+            <option>CST</option>
+            <option>SC</option>
+            <option>CENARE</option>
+          </select>
+        </label>
+
+        <label class="field">
+          Empresa transportadora
+          <input name="transportadora">
+        </label>
+
+        <label class="field">
+          Fecha subasta / inicio contrato
+          <input name="fechaContrato" type="date">
+        </label>
+
+        <label class="field">
+          No. acta / contrato
+          <input name="contrato">
+        </label>
+
+        <label class="field">
+          Nombre del conductor
+          <input name="conductor">
+        </label>
+
+        <label class="field">
+          EPS / ARL
+          <input name="eps">
+        </label>
+      </div>
+    </section>
+
+    <!-- 2. DESCRIPCIÓN DEL VEHÍCULO -->
+    <section class="card">
+      <h2>2. Descripción del vehículo</h2>
+
+      <div style="display:grid;gap:16px">
+
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px">
+          <label class="field">
+            No. placa
+            <input name="placa">
+          </label>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px">
+          <label class="field">
+            Tipo de transporte
+            <select name="transporte">
+              <option value="">Selecciona</option>
+              <option>VAN CARGO</option>
+              <option>CAMIONETA</option>
+              <option>FURGÓN PACHA SENCILLA</option>
+              <option>FURGÓN DOBLE PACHA</option>
+              <option>CAMIÓN</option>
+              <option>TRACTOCAMIÓN</option>
+              <option>OTRO</option>
+            </select>
+          </label>
+
+          <label class="field" id="otroTransporteField" hidden>
+            ¿Qué otro transporte?
+            <input name="otroTransporte">
+          </label>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px">
+          <label class="field">
+            Material transportado
+            <select name="material" id="material">
+              <option value="">Selecciona</option>
+              <option>RESPEL</option>
+              <option>RETOMA</option>
+              <option>RAEE/CORRIENTE LIMPIA</option>
+              <option>EQUIPOS DE COMPUTO</option>
+              <option>LABORATORIOS DE INNOVACIÓN</option>
+              <option>KIT MAKER</option>
+              <option>OTRO</option>
+            </select>
+          </label>
+
+          <label class="field" id="otroMaterialField" hidden>
+            ¿Qué otro material?
+            <input name="otroMaterial">
+          </label>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px">
+          <label class="field">
+            Tipo de combustible
+            <select name="combustible">
+              <option value="">Selecciona</option>
+              <option>DIESEL</option>
+              <option>GASOLINA</option>
+              <option>GAS</option>
+              <option>GAS Y GASOLINA</option>
+            </select>
+          </label>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. ASPECTO FÍSICO -->
+    <section class="card">
+      <h2>3. Aspecto físico</h2>
+
+      <p class="info">
+        Marca los requisitos que cumplen.
+        Los requisitos que no apliquen pueden explicarse en observaciones.
+      </p>
+
+      <div id="fisico" class="checks"></div>
+    </section>
+
+    <!-- 4. SEGURIDAD INDUSTRIAL -->
+    <section class="card">
+      <h2>4. Seguridad industrial</h2>
+      <div id="seguridad" class="checks"></div>
+    </section>
+
+    <!-- 5. ALMACENAMIENTO -->
+    <section class="card">
+      <h2>5. Almacenamiento dentro del vehículo</h2>
+
+      <div id="almacenamiento" class="checks"></div>
+
+      <div id="retoma" class="conditional" hidden>
+        <h3 class="minor">
+          Solo RETOMA / RESPEL / RAEE / CORRIENTE LIMPIA
+        </h3>
+
+        <label class="field">
+          ¿Existe riesgo de accidente y/o riesgo al ambiente?
+          <select name="riesgo">
+            <option value="">Selecciona</option>
+            <option>Sí</option>
+            <option>No</option>
+          </select>
+        </label>
+
+        <br>
+
+        <label class="field">
+          ¿El cargue de material se hace dentro de la bodega?
+          <select name="cargueBodega">
+            <option value="">Selecciona</option>
+            <option>Sí</option>
+            <option>No</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <!-- 6. RESPEL -->
+    <section class="card" id="respelCard" hidden>
+      <h2>6. Validaciones adicionales para RESPEL</h2>
+
+      <h3 class="minor">Señalización del vehículo</h3>
+      <div id="senalizacion" class="checks"></div>
+
+      <h3 class="minor">Transporte de mercancías peligrosas</h3>
+      <div id="peligrosas" class="checks"></div>
+    </section>
+
+    <!-- 7. RESULTADO -->
+    <section class="card">
+      <h2>7. Resultado de la inspección</h2>
+
+      <div class="grid">
+        <label class="field">
+          Resultado
+          <select name="resultado" id="resultado">
+            <option value="">Selecciona</option>
+            <option>Aprobado</option>
+            <option>Rechazado</option>
+          </select>
+        </label>
+
+        <label class="field full" id="rechazoField" hidden>
+          Causal de rechazo
+          <textarea name="causal"></textarea>
+        </label>
+
+        <label class="field full">
+          Observaciones
+          <textarea
+            name="observaciones"
+            placeholder="Incluye aquí reingresos del vehículo durante el día y sus nuevas inspecciones visuales, si aplica."
+          ></textarea>
+        </label>
+      </div>
+
+      <p class="info">
+        Si el vehículo incumple los requisitos, el formato indica
+        abstenerse de autorizar el cargue o descargue.
+      </p>
+    </section>
+
+    <!-- 8. FOTOGRAFÍAS -->
+    <section class="card">
+      <h2>8. Registro fotográfico del vehículo</h2>
+
+      <p class="info">
+        Cuatro espacios para fotografías del vehículo.
+        Las dos primeras fotografías son requeridas.
+      </p>
+
+      <div id="vehiculoGaleria"></div>
+    </section>
+
+    <!-- 9. DOCUMENTOS SOPORTE -->
+    <section class="card">
+      <h2>9. Documentos soporte</h2>
+
+      <p class="info">
+        Adjunta los documentos soporte que correspondan.
+      </p>
+
+      <div id="soporteGaleria"></div>
+    </section>
+
+    <!-- 10. RESPONSABLES Y FIRMAS -->
+    <section class="card">
+      <h2>10. Responsables y firmas</h2>
+
+      <p class="info">
+        Se incluyen los tres firmantes del formato oficial.
+        El nombre del conductor se obtiene de Datos básicos.
+      </p>
+
+      <div class="grid">
+        <label class="field">
+          Diligenciado por: nombre
+          <input name="diligenciaNombre">
+        </label>
+
+        <label class="field">
+          Cédula
+          <input name="diligenciaCedula">
+        </label>
+
+        <label class="field">
+          Cargo
+          <input name="diligenciaCargo">
+        </label>
+
+        <label class="field">
+          Conductor: cédula
+          <input name="firmaConductorCedula">
+        </label>
+
+        <label class="field">
+          Conductor: teléfono
+          <input name="firmaConductorTelefono">
+        </label>
+
+        <label class="field">
+          Aprobado por: nombre
+          <input name="apruebaNombre">
+        </label>
+
+        <label class="field">
+          Aprobado por: cédula
+          <input name="apruebaCedula">
+        </label>
+
+        <label class="field">
+          Aprobado por: cargo
+          <input name="apruebaCargo">
+        </label>
+      </div>
+
+      <p class="info">
+        Firma con el dedo en el celular o con el mouse en el computador.
+        Usa «Borrar firma» para repetir.
+      </p>
+
+      <h3 class="minor">Firmas del formato oficial</h3>
+
+      <div class="signature-grid">
+
+        <div class="signature-box">
+          <b>Firma de quien diligencia</b>
+          <canvas
+            id="firmaDiligencia"
+            class="signature-canvas"
+            width="700"
+            height="170"
+          ></canvas>
+          <button
+            type="button"
+            class="btn secondary clear-sign"
+            data-sign="firmaDiligencia"
+          >Borrar firma</button>
+        </div>
+
+        <div class="signature-box">
+          <b>Firma del conductor</b>
+          <canvas
+            id="firmaConductor"
+            class="signature-canvas"
+            width="700"
+            height="170"
+          ></canvas>
+          <button
+            type="button"
+            class="btn secondary clear-sign"
+            data-sign="firmaConductor"
+          >Borrar firma</button>
+        </div>
+
+        <div class="signature-box">
+          <b>Firma de quien aprueba</b>
+          <canvas
+            id="firmaAprueba"
+            class="signature-canvas"
+            width="700"
+            height="170"
+          ></canvas>
+          <button
+            type="button"
+            class="btn secondary clear-sign"
+            data-sign="firmaAprueba"
+          >Borrar firma</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FIRMANTES ADICIONALES -->
+    <section class="card">
+      <h3 class="minor">Firmantes adicionales (opcional)</h3>
+
+      <p class="info">
+        Los tres firmantes del formato oficial se conservan.
+        Añade otros solo si son necesarios.
+      </p>
+
+      <div id="firmantesAdicionales"></div>
+    </section>
+
+    <p class="pdf-reminder" role="note">
+      ⓘ Recuerda guardar el documento en tu computador.
+      El sistema no conserva copias ni permite recuperar PDF anteriores.
+    </p>
+
+    <div class="actions">
+      <button type="reset" class="btn secondary">
+        Limpiar formulario
+      </button>
+
+      <button type="button" id="generate" class="btn">
+        Generar PDF
+      </button>
+    </div>
+
+  </form>
+</div>
