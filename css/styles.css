@@ -453,19 +453,15 @@ label .obligatorio {
 label {
   white-space: normal;
 }
-
-/* Mostrar el asterisco junto al nombre del campo */
-.field .required,
-.field .asterisco,
-.field .obligatorio,
-.field .req {
-  display: inline !important;
-  margin-left: 4px !important;
-  width: auto !important;
-  vertical-align: baseline !important;
-}
-
-/* Evitar que el asterisco ocupe una fila */
-.field > span:has(> .required) {
-  display: inline !important;
-}
+/* SA-014: asteriscos en la misma línea del título, no como hijo del flex vertical. */
+#form label.field {display:block!important;min-width:0}
+#form label.field[hidden] {display:none!important}
+#form label.field > .cpe-required,
+#form label.field > .sa-star {display:inline!important;margin-left:3px!important;vertical-align:baseline!important}
+#form label.field > input,
+#form label.field > select,
+#form label.field > textarea {display:block!important;width:100%;margin-top:8px}
+/* Nombres oficiales dentro de cada tarjeta de soporte */
+#soporteGaleria .capture-entry > strong {display:block!important}
+/* Botón de dictado colocado inmediatamente bajo observaciones */
+#dictarObservaciones {display:inline-flex;align-items:center;justify-content:center;width:auto;max-width:100%;cursor:pointer}
