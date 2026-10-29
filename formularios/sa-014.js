@@ -63,9 +63,38 @@ const photos=createGallery(document.getElementById('vehiculoGaleria'),{label:'Fo
 // Exactamente cuatro posiciones de fotografía y dos de soporte, sin botones para agregar otras.
 const fixedSlots=(id,count,names)=>{const holder=document.getElementById(id);const button=[...holder.querySelectorAll('button')].find(b=>b.textContent.includes('Agregar fotografía'));if(!button)throw Error('No se pudo preparar la captura de fotos en '+id);for(let i=0;i<count;i++)button.click();button.hidden=true;const titles=holder.querySelectorAll('.capture-entry > strong');titles.forEach((title,i)=>{title.textContent=names[i]||'Fotografía '+(i+1)});return ()=>{for(let i=0;i<count;i++)button.click();holder.querySelectorAll('.capture-entry > strong').forEach((title,i)=>{title.textContent=names[i]||'Fotografía '+(i+1)})}};
 const resetVehicleSlots=fixedSlots('vehiculoGaleria',4,['Vehículo — fotografía 1','Vehículo — fotografía 2','Vehículo — fotografía 3','Vehículo — fotografía 4']);
-const resetSupportSlots=fixedSlots('soporteGaleria',2,['Tecnomecánica o carta de propiedad','Certificado curso de transporte elementos peligrosos (solo RESPEL)']);
+const resetSupportSlots=fixedSlots('soporteGaleria',2,['TECNO MECÁNICA O CARTA DE PROPIEDAD','CERTIFICADO CURSO TRANSPORTE ELEMENTOS PELIGROSOS (SOLO PARA RESPEL)']);
 function markRequiredPhotos(){document.querySelectorAll('#vehiculoGaleria .capture-entry > strong').forEach((title,i)=>{title.querySelector('.cpe-required')?.remove();if(i<2){const star=document.createElement('span');star.className='cpe-required';star.textContent=' *';title.append(star)}})}
 markRequiredPhotos();
+// Dictado por voz exclusivamente en Observaciones (sin almacenar audio).
+function enableObservationDictation(){
+ const field=form.elements.namedItem('observaciones');
+ if(!field || document.getElementById('dictarObservaciones'))return;
+ const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+ const button=document.createElement('button');
+ button.type='button';button.id='dictarObservaciones';button.className='btn secondary';
+ button.textContent='🎤 Dictar observaciones';button.style.marginTop='8px';
+ field.insertAdjacentElement('afterend',button);
+ if(!SpeechRecognition){button.disabled=true;button.title='El navegador no admite dictado por voz';return;}
+ const recognition=new SpeechRecognition();
+ recognition.lang='es-CO';recognition.continuous=true;recognition.interimResults=true;
+ let active=false,startingText='';
+ button.onclick=()=>{
+  if(active){recognition.stop();return;}
+  startingText=field.value.trim();
+  try{recognition.start()}catch(e){console.warn('No se pudo iniciar dictado',e)}
+ };
+ recognition.onstart=()=>{active=true;button.textContent='⏹ Detener dictado';button.setAttribute('aria-pressed','true')};
+ recognition.onresult=e=>{
+  const parts=[];
+  for(let i=0;i<e.results.length;i++)parts.push(e.results[i][0].transcript.trim());
+  field.value=[startingText,parts.join(' ').trim()].filter(Boolean).join(' ');
+  field.dispatchEvent(new Event('input',{bubbles:true}));
+ };
+ recognition.onend=()=>{active=false;button.textContent='🎤 Dictar observaciones';button.setAttribute('aria-pressed','false')};
+ recognition.onerror=e=>{console.warn('Error de dictado:',e.error);if(e.error==='not-allowed')alert('Permite el micrófono en el navegador para dictar observaciones.')};
+}
+enableObservationDictation();
 function signing(canvas){canvas.style.touchAction='none';canvas.style.userSelect='none';canvas.style.border='2px dashed #1782b2';canvas.style.background='#fff';const ctx=canvas.getContext('2d');ctx.lineWidth=3;ctx.lineCap='round';ctx.strokeStyle='#153f60';let drawing=false,last;const point=e=>{const r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height}};canvas.addEventListener('pointerdown',e=>{e.preventDefault();canvas.setPointerCapture(e.pointerId);drawing=true;last=point(e);canvas.dataset.signed='yes';ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(last.x+.1,last.y+.1);ctx.stroke()});canvas.addEventListener('pointermove',e=>{if(!drawing)return;e.preventDefault();const p=point(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p});canvas.addEventListener('pointerup',()=>drawing=false);canvas.addEventListener('pointercancel',()=>drawing=false)}
 document.querySelectorAll('.signature-canvas').forEach(signing);document.querySelectorAll('.clear-sign').forEach(b=>b.onclick=()=>{const canvas=document.getElementById(b.dataset.sign);canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);canvas.dataset.signed='no'});
 form.addEventListener('reset',()=>setTimeout(()=>{conditional();photos.clear();supports.clear();resetVehicleSlots();resetSupportSlots();markRequiredPhotos();additional.clear();document.querySelectorAll('.signature-canvas').forEach(c=>{c.getContext('2d').clearRect(0,0,c.width,c.height);c.dataset.signed='no'})},0));
