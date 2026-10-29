@@ -258,3 +258,28 @@ body{background:#f1f6f9}
 .clear-sign {
   margin-top: 8px;
 }
+/* SA-014-F: distribución institucional dinámica, tamaño carta. */
+.doc-page{width:215.9mm;height:279.4mm;padding:10mm 12mm;display:flex;flex-direction:column;box-sizing:border-box;margin:0 auto;color:#111;background:#fff;font:9px Arial,sans-serif;page-break-after:always;break-after:page}
+.doc-page:last-child{break-after:auto;page-break-after:auto}
+.doc-head{display:grid;grid-template-columns:27% 43% 30%;min-height:28mm;align-items:center;margin-bottom:3mm;border:0;border-bottom:2px solid #00a6c9;position:relative}
+.doc-head::before{content:'';position:absolute;left:-12mm;top:-10mm;width:33%;height:28mm;border-top:2px solid #00a6c9;border-right:2px solid #00a6c9;border-radius:0 16mm 0 0;pointer-events:none}
+.doc-logo{width:95%;max-width:35mm;max-height:19mm;object-fit:contain;position:relative;z-index:1}
+.doc-head>strong{color:#065b95;font-size:10px;text-align:center}
+.doc-meta{width:100%;border-collapse:collapse;table-layout:fixed;font-size:8px;text-align:center}
+.doc-meta td{border:1px solid #444!important;padding:2px!important;height:10mm;vertical-align:middle}
+.doc-page-body{flex:1;min-height:0;overflow:hidden}
+.doc-section{border:1px solid #555;background:#d9d9d9;text-align:center;font-weight:700;font-size:9px;padding:2px 3px;margin:3px 0 0;break-after:avoid}
+.sa-basics{border:1px solid #666;border-top:0;padding:3mm 4mm 2mm;display:flex;flex-direction:column;gap:2mm}
+.sa-basic-row{display:flex;gap:5mm;min-height:5mm}.sa-basic-row>.sa-field{flex:1}
+.sa-field{display:flex;align-items:flex-end;gap:4px;min-width:0}.sa-field-name{flex-shrink:0}.sa-field-value{flex:1;min-width:0;border-bottom:1px solid #777;overflow-wrap:anywhere;padding:1px 3px}
+.sa-vehicle{display:grid;grid-template-columns:23% 28% 20% 29%;border:1px solid #555;border-top:0;min-height:41mm}
+.sa-vehicle-cell{padding:4px 6px;border-right:1px solid #555;min-width:0}.sa-vehicle-cell:last-child{border:0}.sa-vehicle-cell strong{display:block;margin-bottom:3mm}.sa-option{font-size:8px;line-height:1.6}.sa-plate{font-weight:bold;letter-spacing:1px;font-size:14px;margin-top:10mm}
+.sa-description{border:1px solid #555;border-top:0;padding:3px 6px;font-size:8px;line-height:1.35}
+.sa-checks{border:1px solid #555;border-top:0;padding:3px 6px}.sa-check-row{display:flex;align-items:flex-start;gap:7mm;line-height:1.35;font-size:8.5px;margin:1px 0}.sa-tick{flex:0 0 7mm;text-align:center;font-size:10px}.sa-check-txt{flex:1}
+.sa-storage{display:grid;grid-template-columns:42% 58%;border:1px solid #555;border-top:0}.sa-storage>.sa-checks{border:0;border-right:1px solid #555}.sa-storage-right{padding:4px 7px;font-size:8px}.sa-storage-right strong{display:block;margin-bottom:6px;font-size:8px}.sa-storage-right .sa-check-row{gap:2px}
+.sa-result{display:flex;align-items:center;gap:10mm;border:1px solid #555;border-top:0;padding:4mm;font-size:9px}.sa-result .sa-field{flex:1}.sa-observaciones{border:1px solid #555;border-top:0;min-height:25mm;padding:5px;white-space:pre-wrap;overflow-wrap:anywhere}
+.sa-legal{border:1px solid #666;border-top:0;font-size:8px;padding:4px 6px;line-height:1.35}
+.sa-signers{display:grid;grid-template-columns:1fr 1fr;gap:7mm;margin:4mm 0;break-inside:avoid}
+.doc-signer{border:0;padding:0;margin:0;break-inside:avoid}.doc-signer strong{font-size:9px}.doc-sign-slot{height:17mm;display:flex;align-items:end}.doc-signature{max-height:16mm;max-width:75mm;object-fit:contain}.doc-signline{height:0;border-bottom:1px solid #555}.doc-signer-data{margin:2mm 0;font-size:8px}
+.sa-photo-row{display:grid;grid-template-columns:1fr 1fr;border:1px solid #555;margin:0;min-height:93mm;break-inside:avoid}.sa-photo-slot{height:93mm;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;border-right:1px solid #555}.sa-photo-slot:last-child{border:0}.sa-photo-slot img{display:block;max-width:100%;max-height:100%;object-fit:contain}.sa-photo-placeholder{font-weight:bold;color:#888;font-size:11px;text-align:center;padding:6mm}
+@media print{@page{size:letter;margin:0}html,body{margin:0!important;padding:0!important}#printSurface{display:block!important;margin:0!important;padding:0!important}.doc-page{width:215.9mm!important;height:279.4mm!important;margin:0!important;padding:10mm 12mm!important;break-after:page;page-break-after:always}.doc-page:last-child{break-after:auto;page-break-after:auto}}
