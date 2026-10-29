@@ -358,3 +358,14 @@ body{background:#f1f6f9}
 #otroMaterialField[hidden] {
   display: none !important;
 }
+
+/* Orden de campos de descripción del vehículo */
+#otroTransporteField,
+#otroMaterialField {
+  min-width: 0;
+}
+
+#otroTransporteField[hidden],
+#otroMaterialField[hidden] {
+  display: none !important;
+}
