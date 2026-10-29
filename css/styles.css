@@ -369,3 +369,28 @@ body{background:#f1f6f9}
 #otroMaterialField[hidden] {
   display: none !important;
 }
+
+/* Orden de la descripción del vehículo */
+#placaField {
+  grid-column: 1;
+}
+
+#transporteField {
+  grid-column: 1;
+}
+
+#otroTransporteField:not([hidden]) {
+  grid-column: 2;
+}
+
+#materialField {
+  grid-column: 1;
+}
+
+#otroMaterialField:not([hidden]) {
+  grid-column: 2;
+}
+
+#combustibleField {
+  grid-column: 1;
+}
