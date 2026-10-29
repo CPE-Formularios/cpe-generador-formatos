@@ -349,4 +349,6 @@ body{background:#f1f6f9}
   font-size: 14pt;
   font-weight: bold;
   text-align: center;
+  position: relative;
+  top: -10px;
 }
