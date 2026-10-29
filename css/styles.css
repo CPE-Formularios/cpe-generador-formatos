@@ -338,3 +338,15 @@ body{background:#f1f6f9}
 @media print {
   .doc-page .doc-head-art {print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}
 }
+/* Ajuste de la tabla del encabezado CPE */
+.doc-head .doc-meta {
+  position: relative;
+  top: -18px;
+}
+
+/* Título institucional de 14 puntos */
+.doc-head > strong {
+  font-size: 14pt;
+  font-weight: bold;
+  text-align: center;
+}
