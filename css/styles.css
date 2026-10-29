@@ -394,3 +394,34 @@ body{background:#f1f6f9}
 #combustibleField {
   grid-column: 1;
 }
+
+
+/* SA-014: listas de verificación en una sola columna */
+
+#fisico,
+#seguridad {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 5px !important;
+}
+
+/* Cada opción ocupa una fila completa */
+#fisico .check,
+#seguridad .check {
+  grid-column: 1 !important;
+  width: 100%;
+  margin: 0;
+}
+
+/* Títulos de los grupos subrayados */
+#fisico .sa-check-parent,
+#seguridad .sa-check-parent {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* Opciones dependientes con sangría */
+#fisico .sa-check-sub,
+#seguridad .sa-check-sub {
+  padding-left: 38px !important;
+}
