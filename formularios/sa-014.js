@@ -21,6 +21,44 @@ for(const [id,items] of Object.entries(groups)){const box=document.getElementByI
 function conditional(){const m=val('material');document.getElementById('respelCard').hidden=m!=='RESPEL';document.getElementById('retoma').hidden=!['RESPEL','RETOMA','RAEE/CORRIENTE LIMPIA'].includes(m);document.getElementById('rechazoField').hidden=val('resultado')!=='Rechazado';document.getElementById('otroTransporteField').hidden=val('transporte')!=='OTRO';document.getElementById('otroMaterialField').hidden=m!=='OTRO'}
 ['material','resultado','transporte'].forEach(n=>form.elements.namedItem(n).addEventListener('change',conditional));
 conditional();
+// Distribución estable de los campos del vehículo: cada "OTRO" al lado de su selector.
+// Se reutilizan las etiquetas y controles existentes, sin duplicar datos.
+{
+  const placa = form.elements.namedItem('placa');
+  const seccion = placa?.closest('section');
+  const cuadriculaOriginal = placa?.closest('.grid');
+  if (seccion && cuadriculaOriginal) {
+    const contenedor = document.createElement('div');
+    contenedor.className = 'sa-vehiculo-formulario';
+    const filas = [
+      ['placa'],
+      ['transporte', 'otroTransporte'],
+      ['material', 'otroMaterial'],
+      ['combustible']
+    ];
+    filas.forEach(nombres => {
+      const fila = document.createElement('div');
+      fila.className = 'sa-vehiculo-fila';
+      nombres.forEach(nombre => {
+        const campo = form.elements.namedItem(nombre);
+        const etiqueta = campo?.closest('label');
+        if (etiqueta) fila.appendChild(etiqueta);
+      });
+      contenedor.appendChild(fila);
+    });
+    cuadriculaOriginal.replaceWith(contenedor);
+    const estilos = document.createElement('style');
+    estilos.textContent = `
+      .sa-vehiculo-formulario { display: grid; gap: 16px; }
+      .sa-vehiculo-fila { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+      .sa-vehiculo-fila > .field { min-width: 0; }
+      .sa-vehiculo-fila > .field[hidden] { display: none !important; }
+      @media (max-width: 720px) { .sa-vehiculo-fila { grid-template-columns: 1fr; } }
+    `;
+    document.head.appendChild(estilos);
+    conditional();
+  }
+}
 const photos=createGallery(document.getElementById('vehiculoGaleria'),{label:'Foto del vehículo'}),supports=createGallery(document.getElementById('soporteGaleria'),{label:'Documento soporte'}),additional=createAdditionalSigners(document.getElementById('firmantesAdicionales'));
 // Exactamente cuatro posiciones de fotografía y dos de soporte, sin botones para agregar otras.
 const fixedSlots=(id,count,names)=>{const holder=document.getElementById(id);const button=[...holder.querySelectorAll('button')].find(b=>b.textContent.includes('Agregar fotografía'));if(!button)throw Error('No se pudo preparar la captura de fotos en '+id);for(let i=0;i<count;i++)button.click();button.hidden=true;const titles=holder.querySelectorAll('.capture-entry > strong');titles.forEach((title,i)=>{title.textContent=names[i]||'Fotografía '+(i+1)});return ()=>{for(let i=0;i<count;i++)button.click();holder.querySelectorAll('.capture-entry > strong').forEach((title,i)=>{title.textContent=names[i]||'Fotografía '+(i+1)})}};
