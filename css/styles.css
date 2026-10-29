@@ -283,3 +283,20 @@ body{background:#f1f6f9}
 .doc-signer{border:0;padding:0;margin:0;break-inside:avoid}.doc-signer strong{font-size:9px}.doc-sign-slot{height:17mm;display:flex;align-items:end}.doc-signature{max-height:16mm;max-width:75mm;object-fit:contain}.doc-signline{height:0;border-bottom:1px solid #555}.doc-signer-data{margin:2mm 0;font-size:8px}
 .sa-photo-row{display:grid;grid-template-columns:1fr 1fr;border:1px solid #555;margin:0;min-height:93mm;break-inside:avoid}.sa-photo-slot{height:93mm;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;border-right:1px solid #555}.sa-photo-slot:last-child{border:0}.sa-photo-slot img{display:block;max-width:100%;max-height:100%;object-fit:contain}.sa-photo-placeholder{font-weight:bold;color:#888;font-size:11px;text-align:center;padding:6mm}
 @media print{@page{size:letter;margin:0}html,body{margin:0!important;padding:0!important}#printSurface{display:block!important;margin:0!important;padding:0!important}.doc-page{width:215.9mm!important;height:279.4mm!important;margin:0!important;padding:10mm 12mm!important;break-after:page;page-break-after:always}.doc-page:last-child{break-after:auto;page-break-after:auto}}
+
+/* Ajustes puntuales SA-014-F según el Word institucional. */
+.doc-section{background:#d9d9d9!important;color:#111!important}
+.sa-check-row.sa-check-parent .sa-check-txt,.check.sa-check-parent{ text-decoration:underline;font-weight:600 }
+.sa-check-row.sa-check-sub{padding-left:8mm}
+.check.sa-check-sub{margin-left:25px}
+.sa-other-value{margin:1mm 0 0 3mm;border-bottom:1px solid #888;min-height:4mm;overflow-wrap:anywhere}
+.sa-support-slot{height:94mm;display:flex;justify-content:center;align-items:center;border:1px solid #555;break-inside:avoid;overflow:hidden}
+.sa-support-slot+.sa-support-slot{border-top:0}
+.sa-support-slot img{display:block;max-height:100%;max-width:100%;object-fit:contain}
+#vehiculoGaleria .capture-entry,#soporteGaleria .capture-entry{margin-bottom:12px}
+
+/* SA-014-F: titulos grises, subgrupos con sangria y subrayado oficial */
+.doc-page .doc-section{background-color:#d9d9d9!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+.doc-page .sa-check-parent .sa-check-txt{font-weight:700;text-decoration:underline}
+.doc-page .sa-check-sub{padding-left:12mm!important}
+.doc-page .sa-check-sub .sa-tick{flex-basis:7mm}
