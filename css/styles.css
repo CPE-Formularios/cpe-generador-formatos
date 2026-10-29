@@ -352,3 +352,9 @@ body{background:#f1f6f9}
   position: relative;
   top: -10px;
 }
+
+/* Ocultar campos condicionales */
+#otroTransporteField[hidden],
+#otroMaterialField[hidden] {
+  display: none !important;
+}
