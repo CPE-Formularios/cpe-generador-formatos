@@ -16,6 +16,7 @@ export async function renderDocument(meta,blocks){
  await Promise.all([...staging.querySelectorAll('img')].map(imageReady));staging.remove();
  const pages=[];let current=makePage(meta);surface.append(current.p);pages.push(current);
  for(const original of blocks){
+  if((original.dataset.newPage==='true' || (original.classList.contains('doc-section') && ['REGISTRO FOTOGRÁFICO VEHÍCULO','DOCUMENTOS SOPORTES'].includes(original.textContent.trim()))) && current.body.children.length){current=makePage(meta);surface.append(current.p);pages.push(current)}
   const node=original.cloneNode(true);current.body.append(node);
   if(current.body.scrollHeight>current.body.clientHeight+1 && current.body.children.length>1){
    node.remove();current=makePage(meta);surface.append(current.p);pages.push(current);current.body.append(node);
