@@ -18,7 +18,7 @@ if (centroAnterior && centroAnterior.tagName !== 'SELECT') {
 }
 const val=n=>form.elements.namedItem(n)?.value||'';const fmtDate=v=>v?`${v.slice(8,10)}/${v.slice(5,7)}/${v.slice(0,4)}`:'';
 for(const [id,items] of Object.entries(groups)){const box=document.getElementById(id);items.forEach((txt,i)=>{const label=document.createElement('label');label.className='check';if((id==='fisico'&&i>=7)||(id==='seguridad'&&i>=4))label.classList.add('sa-check-sub');if((id==='fisico'&&i===6)||(id==='seguridad'&&i===3))label.classList.add('sa-check-parent');const c=document.createElement('input');c.type='checkbox';c.name=id+'_'+i;label.append(c,document.createTextNode(txt));box.append(label)})}
-function conditional(){const m=val('material');document.getElementById('respelCard').hidden=m!=='RESPEL';document.getElementById('retoma').hidden=!['RESPEL','RETOMA','RAEE/CORRIENTE LIMPIA'].includes(m);document.getElementById('rechazoField').hidden=val('resultado')!=='Rechazado';document.getElementById('otroTransporteField').hidden=val('transporte')!=='OTRO';document.getElementById('otroMaterialField').hidden=m!=='OTRO'}
+function conditional(){const m=val('material');document.getElementById('respelCard').hidden=m!=='RESPEL';document.getElementById('retoma').hidden=!['RESPEL','RETOMA','RAEE/CORRIENTE LIMPIA'].includes(m);document.getElementById('rechazoField').hidden=val('resultado')!=='Rechazado';document.getElementById('otroTransporteField').hidden=val('transporte')!=='OTRO';document.getElementById('otroMaterialField').hidden=m!=='OTRO';form.elements.namedItem('otroTransporte').required=val('transporte')==='OTRO';form.elements.namedItem('otroMaterial').required=m==='OTRO'}
 ['material','resultado','transporte'].forEach(n=>form.elements.namedItem(n).addEventListener('change',conditional));
 conditional();
 // Distribución estable de los campos del vehículo: cada "OTRO" al lado de su selector.
@@ -62,11 +62,13 @@ conditional();
 const photos=createGallery(document.getElementById('vehiculoGaleria'),{label:'Foto del vehículo'}),supports=createGallery(document.getElementById('soporteGaleria'),{label:'Documento soporte'}),additional=createAdditionalSigners(document.getElementById('firmantesAdicionales'));
 // Exactamente cuatro posiciones de fotografía y dos de soporte, sin botones para agregar otras.
 const fixedSlots=(id,count,names)=>{const holder=document.getElementById(id);const button=[...holder.querySelectorAll('button')].find(b=>b.textContent.includes('Agregar fotografía'));if(!button)throw Error('No se pudo preparar la captura de fotos en '+id);for(let i=0;i<count;i++)button.click();button.hidden=true;const titles=holder.querySelectorAll('.capture-entry > strong');titles.forEach((title,i)=>{title.textContent=names[i]||'Fotografía '+(i+1)});return ()=>{for(let i=0;i<count;i++)button.click();holder.querySelectorAll('.capture-entry > strong').forEach((title,i)=>{title.textContent=names[i]||'Fotografía '+(i+1)})}};
-const resetVehicleSlots=fixedSlots('vehiculoGaleria',4,['Vehículo — fotografía 1 (obligatoria)','Vehículo — fotografía 2 (obligatoria)','Vehículo — fotografía 3 (opcional)','Vehículo — fotografía 4 (opcional)']);
+const resetVehicleSlots=fixedSlots('vehiculoGaleria',4,['Vehículo — fotografía 1','Vehículo — fotografía 2','Vehículo — fotografía 3','Vehículo — fotografía 4']);
 const resetSupportSlots=fixedSlots('soporteGaleria',2,['Tecnomecánica o carta de propiedad','Certificado curso de transporte elementos peligrosos (solo RESPEL)']);
+function markRequiredPhotos(){document.querySelectorAll('#vehiculoGaleria .capture-entry > strong').forEach((title,i)=>{title.querySelector('.cpe-required')?.remove();if(i<2){const star=document.createElement('span');star.className='cpe-required';star.textContent=' *';title.append(star)}})}
+markRequiredPhotos();
 function signing(canvas){canvas.style.touchAction='none';canvas.style.userSelect='none';canvas.style.border='2px dashed #1782b2';canvas.style.background='#fff';const ctx=canvas.getContext('2d');ctx.lineWidth=3;ctx.lineCap='round';ctx.strokeStyle='#153f60';let drawing=false,last;const point=e=>{const r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height}};canvas.addEventListener('pointerdown',e=>{e.preventDefault();canvas.setPointerCapture(e.pointerId);drawing=true;last=point(e);canvas.dataset.signed='yes';ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(last.x+.1,last.y+.1);ctx.stroke()});canvas.addEventListener('pointermove',e=>{if(!drawing)return;e.preventDefault();const p=point(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p});canvas.addEventListener('pointerup',()=>drawing=false);canvas.addEventListener('pointercancel',()=>drawing=false)}
 document.querySelectorAll('.signature-canvas').forEach(signing);document.querySelectorAll('.clear-sign').forEach(b=>b.onclick=()=>{const canvas=document.getElementById(b.dataset.sign);canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height);canvas.dataset.signed='no'});
-form.addEventListener('reset',()=>setTimeout(()=>{conditional();photos.clear();supports.clear();resetVehicleSlots();resetSupportSlots();additional.clear();document.querySelectorAll('.signature-canvas').forEach(c=>{c.getContext('2d').clearRect(0,0,c.width,c.height);c.dataset.signed='no'})},0));
+form.addEventListener('reset',()=>setTimeout(()=>{conditional();photos.clear();supports.clear();resetVehicleSlots();resetSupportSlots();markRequiredPhotos();additional.clear();document.querySelectorAll('.signature-canvas').forEach(c=>{c.getContext('2d').clearRect(0,0,c.width,c.height);c.dataset.signed='no'})},0));
 function section(title){return blockSection(title)}
 function el(tag,cls='',text=''){const n=document.createElement(tag);if(cls)n.className=cls;if(text)n.textContent=text;return n;}
 function cell(label,value){const d=el('div','sa-field');d.append(el('span','sa-field-name',label),el('span','sa-field-value',value||' '));return d;}
@@ -114,4 +116,33 @@ function build(){const b=[];
  });
  return b;
 }
-document.getElementById('generate').onclick=async()=>{if(photos.getAll().length<2){alert('Debes adjuntar por lo menos dos fotografías del vehículo antes de generar el PDF.');return}if(!val('resultado')){alert('Selecciona el resultado de la inspección.');return}if(val('resultado')==='Rechazado'&&!val('causal').trim()){alert('Indica la causal de rechazo.');return}try{await renderDocument({title:'CHECK LIST TRANSPORTE',code:'SA-014-F',version:'7',date:'Marzo/2025'},build())}catch(e){alert('Error preparando PDF: '+e.message);console.error(e)}};
+// Validación: lleva al primer campo pendiente antes de preparar el PDF.
+function firstMissing(){
+  conditional();
+  const required=[...form.querySelectorAll('input[required],select[required],textarea[required]')];
+  for(const field of required){
+    if(field.closest('[hidden]') || field.disabled)continue;
+    if(!String(field.value||'').trim())return {node:field,message:'Completa este campo (*) antes de generar el PDF.'};
+  }
+  const photosCards=[...document.querySelectorAll('#vehiculoGaleria .capture-entry')];
+  const photoValues=photos.getAll();
+  for(let i=0;i<2;i++){
+    if(!photoValues[i])return {node:photosCards[i],message:'Adjunta la fotografía '+(i+1)+' (*).'};
+  }
+  return null;
+}
+function showMissing(failure){
+  const node=failure.node;
+  node?.scrollIntoView({behavior:'smooth',block:'center'});
+  if(node?.matches?.('input,select,textarea'))node.focus({preventScroll:true});
+  else node?.querySelector('button')?.focus({preventScroll:true});
+  alert(failure.message);
+}
+document.getElementById('generate').onclick=async()=>{
+ const missing=firstMissing();if(missing){showMissing(missing);return;}
+ if(val('resultado')==='Rechazado'&&!val('causal').trim()){
+  showMissing({node:form.elements.namedItem('causal'),message:'Indica la causal de rechazo.'});return;
+ }
+ try{await renderDocument({title:'CHECK LIST TRANSPORTE',code:'SA-014-F',version:'7',date:'Marzo/2025'},build())}
+ catch(e){alert('Error preparando PDF: '+e.message);console.error(e)}
+};
