@@ -437,3 +437,20 @@ body{background:#f1f6f9}
 #soporteGaleria > .capture-entry > strong {
   display: none;
 }
+
+/* Asteriscos de campos obligatorios */
+label:has(input) > .required,
+label:has(select) > .required,
+label:has(textarea) > .required,
+label .required,
+label .asterisco,
+label .obligatorio {
+  display: inline !important;
+  margin-left: 4px;
+  vertical-align: baseline;
+}
+
+/* Mantener el título y el asterisco juntos */
+label {
+  white-space: normal;
+}
