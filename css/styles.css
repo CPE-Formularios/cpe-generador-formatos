@@ -425,3 +425,10 @@ body{background:#f1f6f9}
 #seguridad .sa-check-sub {
   padding-left: 38px !important;
 }
+
+/* Evitar imágenes de vista previa vacías o eliminadas */
+.capture-entry img[hidden],
+.capture-entry img:not([src]),
+.capture-entry img[src=""] {
+  display: none !important;
+}
