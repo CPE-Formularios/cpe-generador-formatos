@@ -432,3 +432,8 @@ body{background:#f1f6f9}
 .capture-entry img[src=""] {
   display: none !important;
 }
+
+/* Ocultar etiquetas duplicadas de documentos soporte */
+#soporteGaleria > .capture-entry > strong {
+  display: none;
+}
